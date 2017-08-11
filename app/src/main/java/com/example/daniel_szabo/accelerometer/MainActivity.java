@@ -1,6 +1,7 @@
 package com.example.daniel_szabo.accelerometer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void showGraph(View view) {
-        startActivity(null);
+        startActivity(new Intent(this, GraphActivity.class));
     }
 
     public static List<Pair<Long, Double>> getData() {

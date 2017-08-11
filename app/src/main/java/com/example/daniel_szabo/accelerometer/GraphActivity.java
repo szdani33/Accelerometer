@@ -12,11 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class GraphActivity extends AppCompatActivity {
-
-    private static final int RANGE = 3000;
-
-    double maxG = 0;
-
     LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
 
     @Override
@@ -32,24 +27,19 @@ public class GraphActivity extends AppCompatActivity {
 
         // set manual X bounds
         graph.getViewport().setXAxisBoundsManual(true);
-        graph.getViewport().setMinX(0);
-        graph.getViewport().setMaxX(5*RANGE);
+        graph.getViewport().setMaxX(5000);
         // set manual Y bounds
         graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setMinY(0);
-        graph.getViewport().setMaxY(5);
+        graph.getViewport().setMaxY(3);
 
         graph.getViewport().setScalable(true);
         graph.getViewport().setScrollable(true);
         graph.getViewport().setScalableY(true);
         graph.getViewport().setScrollableY(true);
-
-        graph.addSeries(this.series);
     }
 
     private LineGraphSeries<DataPoint> createSeries() {
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(createDataArray());
-
         return series;
     }
 
@@ -62,6 +52,6 @@ public class GraphActivity extends AppCompatActivity {
                 dataPoints.add(new DataPoint(d.first - firstTime, d.second));
             }
         }
-        return new DataPoint[dataPoints.size()];
+        return dataPoints.toArray(new DataPoint[dataPoints.size()]);
     }
 }
