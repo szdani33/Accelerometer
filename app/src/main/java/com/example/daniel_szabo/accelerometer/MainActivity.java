@@ -12,20 +12,31 @@ import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     private static final int SAMPLE_PER_SECOND = 60;
     private static final List<Pair<Long, Double>> data = new LinkedList<>();
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("mm:ss.S");
+
+    private TextView startedTextView;
+    private TextView samplesTextView;
+    private String startedText;
+    private String samplesText;
 
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
     private long lastSampleTime = 0;
     private boolean recordingEnabled;
+    private long startTime;
 
     private Button startButton;
     private Button stopButton;
@@ -40,17 +51,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setupButtons();
+        setupComponents();
         setupSensor();
     }
 
-    private void setupButtons() {
+    private void setupComponents() {
         startButton = (Button) findViewById(R.id.button_start);
         startButton.setEnabled(!recordingEnabled);
         stopButton = (Button) findViewById(R.id.button_stop);
         stopButton.setEnabled(recordingEnabled);
         showButton = (Button) findViewById(R.id.button_show);
         showButton.setEnabled(recordingEnabled);
+
+        samplesTextView = (TextView) findViewById(R.id.sample_count);
+        samplesText = samplesTextView.getText().toString();
+        startedTextView = (TextView) findViewById(R.id.started);
+        startedText = startedTextView.getText().toString();
+        updateTexts(0, DATE_FORMAT);
     }
 
     private void setupSensor() {
@@ -63,9 +80,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor mySensor = sensorEvent.sensor;
         long currentTime = System.currentTimeMillis();
-        if (shouldRecordData(mySensor, currentTime)) {
-            recordData(sensorEvent, currentTime);
+        if(recordingEnabled) {
+            if (shouldRecordData(mySensor, currentTime)) {
+                recordData(sensorEvent, currentTime);
+            }
+            updateTexts(currentTime - startTime, DATE_FORMAT);
         }
+    }
+
+    private void updateTexts(long elapsedTime, DateFormat dateFormat) {
+        startedTextView.setText(startedText + " " + dateFormat.format(new Date(elapsedTime)));
+        samplesTextView.setText(samplesText + " " + data.size());
     }
 
     private void recordData(SensorEvent sensorEvent, long currentTime) {
@@ -81,10 +106,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void startRecording(View view) {
         data.clear();
         changeRecordingStatus();
+        startTime = System.currentTimeMillis();
     }
 
     public void stopRecording(View view) {
         changeRecordingStatus();
+        updateTexts(System.currentTimeMillis() - startTime, new SimpleDateFormat("mm:ss.SSS"));
     }
 
     private void changeRecordingStatus() {
@@ -95,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     private boolean shouldRecordData(Sensor mySensor, long currentTime) {
-        return recordingEnabled && mySensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION && currentTime - lastSampleTime > 1000 / SAMPLE_PER_SECOND;
+        return mySensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION && currentTime - lastSampleTime > 1000 / SAMPLE_PER_SECOND;
     }
 
     @Override
