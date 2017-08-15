@@ -14,6 +14,8 @@ import java.util.List;
 public class GraphActivity extends AppCompatActivity {
     LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
 
+    private double maxG;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,27 +25,21 @@ public class GraphActivity extends AppCompatActivity {
 
     private void setupGraph() {
         GraphView graph = (GraphView) findViewById(R.id.graph);
-        graph.addSeries(createSeries());
+        setupSeries();
+        graph.addSeries(series);
 
-        // set manual X bounds
         graph.getViewport().setXAxisBoundsManual(true);
-        graph.getViewport().setMaxX(5000);
-        // set manual Y bounds
         graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setMaxY(3);
-
         graph.getViewport().setScalable(true);
         graph.getViewport().setScrollable(true);
         graph.getViewport().setScalableY(true);
         graph.getViewport().setScrollableY(true);
+        graph.getViewport().setMaxX(series.getHighestValueX());
+        graph.getViewport().setMaxY(Math.max(series.getHighestValueY() * 1.05, 1));
+
     }
 
-    private LineGraphSeries<DataPoint> createSeries() {
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(createDataArray());
-        return series;
-    }
-
-    private DataPoint[] createDataArray() {
+    private void setupSeries() {
         List<Pair<Long, Double>> data = MainActivity.getData();
         List<DataPoint> dataPoints = new LinkedList<>();
         if (!data.isEmpty()) {
@@ -52,6 +48,6 @@ public class GraphActivity extends AppCompatActivity {
                 dataPoints.add(new DataPoint(d.first - firstTime, d.second));
             }
         }
-        return dataPoints.toArray(new DataPoint[dataPoints.size()]);
+        series = new LineGraphSeries<>(dataPoints.toArray(new DataPoint[dataPoints.size()]));
     }
 }
