@@ -24,6 +24,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     private static final int SAMPLE_PER_SECOND = 60;
+    private static final double FRAME_LENGTH = 1000 / SAMPLE_PER_SECOND;
     private static final List<Pair<Long, Double>> data = new LinkedList<>();
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("mm:ss.S");
 
@@ -34,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
-    private long lastSampleTime = 0;
     private boolean recordingEnabled;
     private long startTime;
 
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private void setupSensor() {
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-        senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
+        registerSensor();
     }
 
     @Override
@@ -94,13 +94,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     private void recordData(SensorEvent sensorEvent, long currentTime) {
-        lastSampleTime = System.currentTimeMillis();
         x = sensorEvent.values[0];
         y = sensorEvent.values[1];
         z = sensorEvent.values[2];
         double g = Math.sqrt(x * x + y * y + z * z) / 8.91f;
         double roundedG = new BigDecimal(g).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        data.add(new Pair(currentTime, roundedG));
+        data.add(new Pair<>(currentTime, roundedG));
     }
 
     public void startRecording(View view) {
@@ -122,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     private boolean shouldRecordData(Sensor mySensor, long currentTime) {
-        return mySensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION && currentTime - lastSampleTime > 1000 / SAMPLE_PER_SECOND;
+        return mySensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION && currentTime - startTime > data.size() * FRAME_LENGTH;
     }
 
     @Override
@@ -138,7 +137,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume() {
         super.onResume();
-        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        registerSensor();
+    }
+
+    private void registerSensor() {
+        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     public void showGraph(View view) {
