@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.daniel_szabo.sensors.com.example.daniel_szabo.sensors.MenuActivity">
+
+    <Button android:id="@+id/accelerometerBt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="80dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:padding="15dp"
+        android:textSize="24dp"
+        android:text="@string/accelerometer"
+        android:onClick="openAccelerometer" />
+
+    <Button android:id="@+id/magnetometerBt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/accelerometerBt"
+        android:layout_marginTop="30dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:padding="15dp"
+        android:textSize="24dp"
+        android:text="@string/magnetometer"
+        android:onClick="openMagnetometer" />
+
+</android.support.constraint.ConstraintLayout>

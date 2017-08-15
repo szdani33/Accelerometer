@@ -1,4 +1,4 @@
-package com.example.daniel_szabo.accelerometer;
+package com.example.daniel_szabo.sensors;
 
 import org.junit.Test;
 

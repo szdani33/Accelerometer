@@ -1,4 +1,4 @@
-package com.example.daniel_szabo.accelerometer;
+package com.example.daniel_szabo.sensors;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -40,7 +40,7 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     private void setupSeries() {
-        List<Pair<Long, Double>> data = MainActivity.getData();
+        List<Pair<Long, Double>> data = AccelerometerActivity.getData();
         List<DataPoint> dataPoints = new LinkedList<>();
         if (!data.isEmpty()) {
             long firstTime = data.get(0).first;

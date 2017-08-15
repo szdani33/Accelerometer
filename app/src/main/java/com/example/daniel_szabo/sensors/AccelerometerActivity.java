@@ -1,4 +1,4 @@
-package com.example.daniel_szabo.accelerometer;
+package com.example.daniel_szabo.sensors;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,12 +22,12 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
+public class AccelerometerActivity extends AppCompatActivity implements SensorEventListener {
     private static final int SAMPLE_PER_SECOND = 60;
     private static final double FRAME_LENGTH = 1000 / SAMPLE_PER_SECOND;
-    private static final List<Pair<Long, Double>> data = new LinkedList<>();
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("mm:ss.S");
 
+    private static List<Pair<Long, Double>> data;
     private TextView startedTextView;
     private TextView samplesTextView;
     private String startedText;
@@ -49,10 +49,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_accelerometer);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        initFields();
         setupComponents();
         setupSensor();
+    }
+
+    private void initFields() {
+        data = new LinkedList<>();
     }
 
     private void setupComponents() {
@@ -131,6 +136,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onPause() {
         super.onPause();
+        unregisterSensor();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        unregisterSensor();
+    }
+
+    private void unregisterSensor() {
         senSensorManager.unregisterListener(this);
     }
 

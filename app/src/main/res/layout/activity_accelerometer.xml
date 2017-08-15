@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.daniel_szabo.accelerometer.MainActivity">
+    tools:context="com.example.daniel_szabo.sensors.com.example.daniel_szabo.sensors.AccelerometerActivity">
 
     <Button
         android:id="@+id/button_start"
@@ -22,7 +22,7 @@
         android:padding="15sp" />
 
     <Button
-        android:id="@id/button_stop"
+        android:id="@+id/button_stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="stopRecording"
