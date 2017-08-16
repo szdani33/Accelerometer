@@ -136,23 +136,10 @@ public class AccelerometerActivity extends AppCompatActivity implements SensorEv
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterSensor();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        unregisterSensor();
     }
 
     private void unregisterSensor() {
         senSensorManager.unregisterListener(this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerSensor();
     }
 
     private void registerSensor() {
@@ -165,5 +152,11 @@ public class AccelerometerActivity extends AppCompatActivity implements SensorEv
 
     public static List<Pair<Long, Double>> getData() {
         return data;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterSensor();
     }
 }

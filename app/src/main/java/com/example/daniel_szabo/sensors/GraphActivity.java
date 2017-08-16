@@ -14,8 +14,6 @@ import java.util.List;
 public class GraphActivity extends AppCompatActivity {
     LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
 
-    private double maxG;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
