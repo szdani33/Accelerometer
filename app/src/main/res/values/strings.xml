@@ -9,4 +9,5 @@
     <string name="button_show">SHOW GRAPH</string>
     <string name="sample_count">Samples collected: </string>
     <string name="started">Started: </string>
+    <string name="magneticField">Strength:</string>
 </resources>
