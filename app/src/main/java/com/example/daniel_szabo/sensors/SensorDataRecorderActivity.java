@@ -1,6 +1,7 @@
 package com.example.daniel_szabo.sensors;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -152,7 +153,9 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity imple
     }
 
     public void showGraph(View view) {
-        startActivity(new Intent(this, GraphActivity.class));
+        Intent intent = new Intent(this, GraphActivity.class);
+        intent.putExtra(GraphActivity.GRAPH_NAME_KEY, getTitle());
+        startActivity(intent);
     }
 
     public static List<Pair<Long, Double>> getData() {

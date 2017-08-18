@@ -12,12 +12,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class GraphActivity extends AppCompatActivity {
+    public static final String GRAPH_NAME_KEY = "graphNameKey";
+
     LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
+        setTitle(getIntent().getStringExtra(GRAPH_NAME_KEY) + " Graph");
         setupGraph();
     }
 

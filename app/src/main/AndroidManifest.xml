@@ -21,15 +21,17 @@
 
         <activity
             android:name=".AccelerometerActivity"
-            android:configChanges="screenSize|orientation" />
+            android:configChanges="screenSize|orientation"
+            android:label="@string/accelerometerTitle" />
 
         <activity android:name=".MagnetometerActivity"
-            android:configChanges="screenSize|orientation" />
+            android:configChanges="screenSize|orientation"
+            android:label="@string/magnetometerTitle" />
 
         <activity
             android:name=".GraphActivity"
             android:configChanges="screenSize|orientation"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="userLandscape" />
 
     </application>
 

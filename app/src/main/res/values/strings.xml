@@ -10,4 +10,6 @@
     <string name="sample_count">Samples collected: </string>
     <string name="started">Started: </string>
     <string name="magneticField">Strength:</string>
+    <string name="accelerometerTitle">Accelerometer</string>
+    <string name="magnetometerTitle">Magnetometer</string>
 </resources>
