@@ -43,4 +43,10 @@ public class MagnetometerActivity extends AppCompatActivity implements SensorEve
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        senSensorManager.unregisterListener(this);
+    }
 }

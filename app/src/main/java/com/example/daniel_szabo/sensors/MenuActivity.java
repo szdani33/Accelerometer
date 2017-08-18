@@ -18,6 +18,6 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void openMagnetometer(View view) {
-//        startActivity(new Intent(this, Activity.class));
+        startActivity(new Intent(this, MagnetometerActivity.class));
     }
 }
