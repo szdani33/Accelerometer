@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.daniel_szabo.sensors">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.daniel_szabo.sensors">
 
     <application
         android:allowBackup="true"
@@ -9,26 +10,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="com.example.daniel_szabo.sensors.AccelerometerActivity"
-            android:configChanges="screenSize|orientation" />
-
-        <activity android:name="com.example.daniel_szabo.sensors.GraphActivity"
-            android:screenOrientation="landscape"
-            android:configChanges="screenSize|orientation" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".AccelerometerActivity" />
-        </activity>
-
-        <activity android:name="com.example.daniel_szabo.sensors.MenuActivity"
-            android:screenOrientation="portrait" >
+        <activity
+            android:name=".MenuActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".MagnetometerActivity" />
+        <activity
+            android:name=".AccelerometerActivity"
+            android:configChanges="screenSize|orientation" />
+
+        <activity android:name=".MagnetometerActivity"
+            android:configChanges="screenSize|orientation" />
+
+        <activity
+            android:name=".GraphActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="landscape" />
 
     </application>
+
 </manifest>
