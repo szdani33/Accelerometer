@@ -28,5 +28,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".MagnetometerActivity" />
+
     </application>
 </manifest>
