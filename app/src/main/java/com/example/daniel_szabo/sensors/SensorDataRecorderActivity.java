@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class RecordingActivity extends AppCompatActivity implements SensorEventListener {
+public abstract class SensorDataRecorderActivity extends AppCompatActivity implements SensorEventListener {
     private static final int SAMPLE_PER_SECOND = 60;
     private static final double FRAME_LENGTH = 1000 / SAMPLE_PER_SECOND;
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("mm:ss.S");
@@ -47,14 +47,14 @@ public abstract class RecordingActivity extends AppCompatActivity implements Sen
 
     private final int sensorType;
 
-    public RecordingActivity(int sensorType) {
+    public SensorDataRecorderActivity(int sensorType) {
         this.sensorType = sensorType;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recording);
+        setContentView(R.layout.activity_sensor_data_recorder);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         initFields();
         setupComponents();
