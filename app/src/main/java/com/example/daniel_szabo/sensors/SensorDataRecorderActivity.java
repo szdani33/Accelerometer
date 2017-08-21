@@ -1,33 +1,37 @@
 package com.example.daniel_szabo.sensors;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.daniel_szabo.sensors.parcelable.ParcelableSample;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 public abstract class SensorDataRecorderActivity extends AppCompatActivity implements SensorEventListener {
+    public static final String RECORDED_DATA = "recordedDataKey";
+    public static final String DATA_TYPE_NAME = "graphNameKey";
+
     private static final int SAMPLE_PER_SECOND = 60;
     private static final double FRAME_LENGTH = 1000 / SAMPLE_PER_SECOND;
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("mm:ss.S");
 
-    private static List<Pair<Long, Double>> data;
+    private List<ParcelableSample> data = new LinkedList<>();
     private TextView startedTextView;
     private TextView samplesTextView;
     private String startedText;
@@ -42,10 +46,6 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity imple
     private Button stopButton;
     private Button showButton;
 
-    float x;
-    float y;
-    float z;
-
     private final int sensorType;
 
     public SensorDataRecorderActivity(int sensorType) {
@@ -57,13 +57,8 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity imple
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensor_data_recorder);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        initFields();
         setupComponents();
         setupSensor();
-    }
-
-    private void initFields() {
-        data = new LinkedList<>();
     }
 
     private void setupComponents() {
@@ -105,12 +100,12 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity imple
     }
 
     private void recordData(SensorEvent sensorEvent, long currentTime) {
-        x = sensorEvent.values[0];
-        y = sensorEvent.values[1];
-        z = sensorEvent.values[2];
-        double g = Math.sqrt(x * x + y * y + z * z) / 8.91f;
-        double roundedG = new BigDecimal(g).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        data.add(new Pair<>(currentTime, roundedG));
+        double x = sensorEvent.values[0];
+        double y = sensorEvent.values[1];
+        double z = sensorEvent.values[2];
+        double value = Math.sqrt(x * x + y * y + z * z) / 8.91f;
+        double roundedValue = new BigDecimal(value).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        data.add(new ParcelableSample(currentTime, roundedValue));
     }
 
     public void startRecording(View view) {
@@ -154,12 +149,9 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity imple
 
     public void showGraph(View view) {
         Intent intent = new Intent(this, GraphActivity.class);
-        intent.putExtra(GraphActivity.GRAPH_NAME_KEY, getTitle());
+        intent.putExtra(DATA_TYPE_NAME, getTitle());
+        intent.putParcelableArrayListExtra(RECORDED_DATA, new ArrayList<>(data));
         startActivity(intent);
-    }
-
-    public static List<Pair<Long, Double>> getData() {
-        return data;
     }
 
     @Override
