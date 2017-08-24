@@ -6,45 +6,34 @@
     android:layout_height="match_parent"
     tools:context="com.example.daniel_szabo.sensors.SensorDataRecorderActivity">
 
-    <Button
-        android:id="@+id/button_start"
+    <ToggleButton
+        android:id="@+id/startStopTB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="startRecording"
-        android:text="@string/button_start"
+        android:onClick="startStopRecording"
+        android:textOff="@string/toggleButton_start"
+        android:textOn="@string/toggleButton_stop"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/button_stop"
+        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="50dp"
 
         android:textSize="24sp"
         android:padding="15sp" />
 
     <Button
-        android:id="@+id/button_stop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="stopRecording"
-        android:text="@string/button_stop"
-
-        app:layout_constraintTop_toTopOf="@id/button_start"
-        app:layout_constraintLeft_toRightOf="@id/button_start"
-        app:layout_constraintRight_toRightOf="parent"
-
-        android:textSize="24sp"
-        android:padding="15sp" />
-
-    <Button
-        android:id="@+id/button_show"
+        android:id="@+id/showGraphBt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="showGraph"
         android:text="@string/button_show"
+
         android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@id/button_start"
+        app:layout_constraintTop_toBottomOf="@id/startStopTB"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+
         android:textSize="24sp"
         android:padding="15sp" />
 
@@ -53,19 +42,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/started"
-        android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@id/button_show"
-        app:layout_constraintLeft_toLeftOf="@id/button_start"
-        android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/sample_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sample_count"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@id/started"
-        app:layout_constraintLeft_toLeftOf="@id/button_start"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/showGraphBt"
+        app:layout_constraintLeft_toLeftOf="@id/startStopTB"
+
         android:textSize="24sp" />
 
 </android.support.constraint.ConstraintLayout>
