@@ -6,8 +6,6 @@ import android.hardware.SensorEventListener;
 
 import com.example.daniel_szabo.sensors.parcelable.ParcelableSample;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,9 +42,7 @@ public class RecordingSensorEventListener implements SensorEventListener {
         double x = sensorEvent.values[0];
         double y = sensorEvent.values[1];
         double z = sensorEvent.values[2];
-        double value = Math.sqrt(x * x + y * y + z * z) / 8.91f;
-        double roundedValue = new BigDecimal(value).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        recordedData.add(new ParcelableSample(sensorEvent.timestamp, roundedValue));
+        recordedData.add(new ParcelableSample(sensorEvent.timestamp, x, y, z));
     }
 
     @Override

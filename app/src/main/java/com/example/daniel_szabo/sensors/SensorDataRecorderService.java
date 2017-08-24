@@ -14,7 +14,7 @@ import java.util.List;
 
 public class SensorDataRecorderService extends Service {
 
-    private static final int SAMPLE_PER_SECOND = 3;
+    private static final int SAMPLE_PER_SECOND = 10;
     private static final int SENSOR_TYPE = Sensor.TYPE_LINEAR_ACCELERATION;
 
     private SensorManager sensorManager;
@@ -62,10 +62,5 @@ public class SensorDataRecorderService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return new ServiceBinder<>(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 }

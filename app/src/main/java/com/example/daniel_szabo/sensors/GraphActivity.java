@@ -1,6 +1,7 @@
 package com.example.daniel_szabo.sensors;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.daniel_szabo.sensors.parcelable.ParcelableSample;
@@ -8,6 +9,8 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,9 +49,19 @@ public class GraphActivity extends AppCompatActivity {
         if (!rawRecordedData.isEmpty()) {
             long firstTime = rawRecordedData.get(0).getTime();
             for (ParcelableSample d : rawRecordedData) {
-                dataPoints.add(new DataPoint(d.getTime() - firstTime, d.getValue()));
+                dataPoints.add(createDataPoint(firstTime, d));
             }
         }
         return new LineGraphSeries<>(dataPoints.toArray(new DataPoint[dataPoints.size()]));
+    }
+
+    @NonNull
+    private DataPoint createDataPoint(long firstTime, ParcelableSample sample) {
+        double x = sample.getX();
+        double y = sample.getY();
+        double z = sample.getZ();
+        double value = Math.sqrt(x * x + y * y + z * z) / 8.91f;
+        double roundedValue = new BigDecimal(value).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return new DataPoint(sample.getTime() - firstTime, roundedValue);
     }
 }

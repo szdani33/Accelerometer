@@ -7,8 +7,7 @@
     <string name="button_start">START</string>
     <string name="button_stop">STOP</string>
     <string name="button_show">SHOW GRAPH</string>
-    <string name="sample_count">Samples collected: </string>
-    <string name="started">Started: </string>
+    <string name="started">Service status: </string>
     <string name="magneticField">Strength:</string>
     <string name="accelerometerTitle">Accelerometer</string>
     <string name="magnetometerTitle">Magnetometer</string>

@@ -17,8 +17,4 @@ public class MenuActivity extends AppCompatActivity {
     public void openAccelerometer(View view) {
         startActivity(new Intent(this, AccelerometerActivity.class));
     }
-
-    public void openMagnetometer(View view) {
-        startActivity(new Intent(this, MagnetometerActivity.class));
-    }
 }
