@@ -17,4 +17,8 @@ public class MenuActivity extends AppCompatActivity {
     public void openAccelerometer(View view) {
         startActivity(new Intent(this, AccelerometerActivity.class));
     }
+
+    public void openSettings(View view) {
+        new SettingsDialog().show(getFragmentManager(), "settings");
+    }
 }

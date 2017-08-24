@@ -11,4 +11,9 @@
     <string name="magneticField">Strength:</string>
     <string name="accelerometerTitle">Accelerometer</string>
     <string name="magnetometerTitle">Magnetometer</string>
+    <string name="settings">SETTINGS</string>
+    <string name="settingsDialogTitle">Settings</string>
+    <string name="settingsOKButton">OK</string>
+    <string name="settingsCancelButton">Cancel</string>
+    <string name="samplesPerSecondSettingTV">Samples per secons</string>
 </resources>
