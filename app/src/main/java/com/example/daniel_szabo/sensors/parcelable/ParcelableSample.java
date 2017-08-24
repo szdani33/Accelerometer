@@ -6,25 +6,39 @@ import android.os.Parcelable;
 public class ParcelableSample implements Parcelable {
 
     private final long time;
-    private final double value;
+    private final double x;
+    private final double y;
+    private final double z;
 
-    public ParcelableSample(long time, double value) {
+    public ParcelableSample(long time, double x, double y, double z) {
         this.time = time;
-        this.value = value;
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public long getTime() {
         return time;
     }
 
-    public double getValue() {
-        return value;
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getZ() {
+        return z;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(time);
-        dest.writeDouble(value);
+        dest.writeDouble(x);
+        dest.writeDouble(y);
+        dest.writeDouble(z);
     }
 
     @Override
@@ -36,8 +50,10 @@ public class ParcelableSample implements Parcelable {
         @Override
         public ParcelableSample createFromParcel(Parcel source) {
             long time = source.readLong();
-            double value = source.readDouble();
-            return new ParcelableSample(time, value);
+            double x = source.readDouble();
+            double y = source.readDouble();
+            double z = source.readDouble();
+            return new ParcelableSample(time, x, y, z);
         }
 
         @Override
