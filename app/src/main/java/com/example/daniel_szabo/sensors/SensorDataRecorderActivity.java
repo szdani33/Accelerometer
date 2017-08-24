@@ -20,8 +20,8 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity {
     private Button stopButton;
     private Button showButton;
     private SensorDataRecorderService service;
-    private TextView statusTV;
-    private String statusTVText;
+    private TextView serviceStatusTV;
+    private TextView recordingStatusTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +36,12 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
-        startButton = (Button) findViewById(R.id.button_start);
-        stopButton = (Button) findViewById(R.id.button_stop);
-        showButton = (Button) findViewById(R.id.button_show);
-        statusTV = (TextView) findViewById(R.id.statusTV);
-        statusTVText = statusTV.getText().toString();
+        startButton = (Button) findViewById(R.id.startRecordingBt);
+        stopButton = (Button) findViewById(R.id.stopRecordingBt);
+        showButton = (Button) findViewById(R.id.showGraphBt);
+
+        serviceStatusTV = (TextView) findViewById(R.id.serviceStatusTV);
+        recordingStatusTV = (TextView) findViewById(R.id.recordingStatusTV);
     }
 
     public void startRecording(View view) {
@@ -61,21 +62,19 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity {
     }
 
     private void updateComponents() {
-        boolean recordingEnabled = service.isRecordingEnabled();
-        startButton.setEnabled(!recordingEnabled);
-        stopButton.setEnabled(recordingEnabled);
-        showButton.setEnabled(!recordingEnabled && service.hasRecordedData());
-
-        statusTV.setText(statusTVText + " " + getServiceStatusText());
-    }
-
-    private String getServiceStatusText() {
-        if(service == null) {
-            return ServiceConnectionStatus.DISCONNECTED.name();
-        } else if (service.isRecordingEnabled()) {
-            return ServiceConnectionStatus.RUNNING.name();
+        if (service == null) {
+            serviceStatusTV.setText(getString(R.string.serviceStatusText) + " " + getString(R.string.serviceDisconnectedText));
+            recordingStatusTV.setText(getString(R.string.recordingStatusText) + " " + getString(R.string.recordingStoppedText));
+            startButton.setEnabled(false);
+            stopButton.setEnabled(false);
+            showButton.setEnabled(false);
         } else {
-            return ServiceConnectionStatus.CONNECTED.name();
+            serviceStatusTV.setText(getString(R.string.serviceStatusText) + " " + getString(R.string.serviceCconnectedText));
+            recordingStatusTV.setText(getString(R.string.recordingStatusText) + " " + (service.isRecordingEnabled() ? getString(R.string.recordingRunnigText) : getString(R.string.recordingStoppedText)));
+            boolean recordingEnabled = service.isRecordingEnabled();
+            startButton.setEnabled(!recordingEnabled);
+            stopButton.setEnabled(recordingEnabled);
+            showButton.setEnabled(!recordingEnabled && service.hasRecordedData());
         }
     }
 
@@ -91,11 +90,5 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity {
             service = null;
             updateComponents();
         }
-    }
-
-    private enum ServiceConnectionStatus {
-        DISCONNECTED,
-        CONNECTED,
-        RUNNING;
     }
 }

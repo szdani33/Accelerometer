@@ -7,7 +7,6 @@
     <string name="button_start">START</string>
     <string name="button_stop">STOP</string>
     <string name="button_show">SHOW GRAPH</string>
-    <string name="started">Service status: </string>
     <string name="magneticField">Strength:</string>
     <string name="accelerometerTitle">Accelerometer</string>
     <string name="magnetometerTitle">Magnetometer</string>
@@ -16,4 +15,10 @@
     <string name="settingsOKButton">OK</string>
     <string name="settingsCancelButton">Cancel</string>
     <string name="samplesPerSecondSettingTV">Samples per secons</string>
+    <string name="recordingStatusText">Recording status:</string>
+    <string name="serviceStatusText">Service status:</string>
+    <string name="serviceDisconnectedText">DISCONNECTED</string>
+    <string name="recordingStoppedText">STOPPED</string>
+    <string name="serviceCconnectedText">CONNECTED</string>
+    <string name="recordingRunnigText">RUNNING</string>
 </resources>
