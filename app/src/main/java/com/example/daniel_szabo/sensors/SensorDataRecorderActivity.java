@@ -9,20 +9,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.daniel_szabo.sensors.parcelable.ParcelableSample;
+import com.example.daniel_szabo.sensors.util.FileUtil;
+import com.example.daniel_szabo.sensors.util.LargeDataTransferUtil;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class SensorDataRecorderActivity extends AppCompatActivity {
-    public static final String RECORDED_DATA = "recordedDataKey";
-    public static final String DATA_TYPE_NAME = "graphNameKey";
+    public static final String SAVED_DATA_FILE_NAME = "savedData";
 
     private List<ParcelableSample> recordedData;
 
@@ -71,10 +70,24 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity {
 
     public void showGraph(View view) {
         Intent intent = new Intent(this, GraphActivity.class);
-        intent.putExtra(DATA_TYPE_NAME, getTitle());
-        intent.putParcelableArrayListExtra(RECORDED_DATA, new ArrayList<>(recordedData));
-        startActivity(intent);
+        intent.putExtra(GraphActivity.DATA_TYPE_NAME, getTitle());
+//        LargeDataTransferUtil.writeDataToTempFile(getApplicationContext(), GraphActivity.RECORDED_DATA_FILE_NAME, new ArrayList<>(createLargeData()));
+        try {
+            LargeDataTransferUtil.writeDataToTempFile(getApplicationContext(), GraphActivity.RECORDED_DATA_FILE_NAME, new ArrayList<>(recordedData));
+            startActivity(intent);
+        } catch (IOException e) {
+            toastMessage("Cannot open Graph!");
+        }
     }
+
+//    private List<ParcelableSample> createLargeData() {
+//        Random r = new Random();
+//        List<ParcelableSample> result = new ArrayList<>();
+//        for (int i = 0; i < 12000; i++) {
+//            result.add(new ParcelableSample(i * 60, r.nextDouble(), r.nextDouble(), r.nextDouble()));
+//        }
+//        return result;
+//    }
 
     private void updateComponents() {
         if (service == null) {
@@ -99,27 +112,27 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity {
 
     public void saveData(View view) {
         try {
-            FileOutputStream fos = openFileOutput("savedData", MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(service.getRecordedData());
-            oos.close();
-            fos.close();
+            FileUtil.writeObjectToFile(openFileOutput(SAVED_DATA_FILE_NAME, MODE_PRIVATE), new ArrayList<>(recordedData));
+            toastMessage("Data saved successfully.");
         } catch (IOException e) {
-            e.printStackTrace();
+            toastMessage("Could NOT save data!");
         }
     }
 
     public void loadData(View view) {
         try {
-            FileInputStream fis = openFileInput("savedData");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            recordedData = (List<ParcelableSample>) ois.readObject();
-            fis.close();
-            ois.close();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            recordedData = FileUtil.readObjectFromFile(openFileInput(SAVED_DATA_FILE_NAME));
+            toastMessage("Data loaded succesfully.");
+        } catch (FileNotFoundException e) {
+            toastMessage("No data found!");
+        } catch (IOException e) {
+            toastMessage("Could NOT load data!");
         }
         updateComponents();
+    }
+
+    private void toastMessage(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     private boolean hasRecordedData() {
@@ -128,6 +141,7 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity {
 
     private class SimpleServiceConnection implements ServiceConnection {
         @Override
+        @SuppressWarnings("unchecked")
         public void onServiceConnected(ComponentName name, IBinder binder) {
             service = ((ServiceBinder<SensorDataRecorderService>) binder).getService();
             updateComponents();
