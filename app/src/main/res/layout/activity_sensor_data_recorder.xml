@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:onClick="startRecording"
-
         android:padding="15sp"
         android:text="@string/button_start"
         android:textSize="24sp"
@@ -26,11 +25,9 @@
         android:layout_height="wrap_content"
         android:onClick="stopRecording"
         android:padding="15sp"
-
         android:text="@string/button_stop"
         android:textSize="24sp"
         app:layout_constraintLeft_toRightOf="@id/startRecordingBt"
-
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/startRecordingBt"/>
 
@@ -38,14 +35,38 @@
         android:id="@+id/showGraphBt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:onClick="showGraph"
         android:padding="15sp"
         android:text="@string/button_show"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/saveDataBt"
+        app:layout_constraintTop_toBottomOf="@+id/startRecordingBt"/>
+
+    <Button
+        android:id="@+id/saveDataBt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="saveData"
+        android:padding="15sp"
+        android:text="@string/saveDataText"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toRightOf="@+id/showGraphBt"
+        app:layout_constraintRight_toLeftOf="@+id/loadDataBt"
+        app:layout_constraintTop_toTopOf="@id/showGraphBt"/>
+
+    <Button
+        android:id="@+id/loadDataBt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="loadData"
+        android:padding="15sp"
+        android:text="@string/loadDataText"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toRightOf="@+id/saveDataBt"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/startRecordingBt"/>
+        app:layout_constraintTop_toTopOf="@+id/saveDataBt"/>
 
     <TextView
         android:id="@+id/serviceStatusTV"
@@ -55,7 +76,7 @@
         android:text="@string/serviceStatusText"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="@+id/startRecordingBt"
-        app:layout_constraintTop_toBottomOf="@+id/showGraphBt"/>
+        app:layout_constraintTop_toBottomOf="@+id/saveDataBt" />
 
     <TextView
         android:id="@+id/recordingStatusTV"

@@ -21,4 +21,6 @@
     <string name="recordingStoppedText">STOPPED</string>
     <string name="serviceCconnectedText">CONNECTED</string>
     <string name="recordingRunnigText">RUNNING</string>
+    <string name="saveDataText">SAVE</string>
+    <string name="loadDataText">LOAD</string>
 </resources>

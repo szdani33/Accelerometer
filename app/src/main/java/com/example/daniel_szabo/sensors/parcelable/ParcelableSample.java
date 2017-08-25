@@ -3,7 +3,9 @@ package com.example.daniel_szabo.sensors.parcelable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class ParcelableSample implements Parcelable {
+import java.io.Serializable;
+
+public class ParcelableSample implements Parcelable, Serializable {
 
     private final long time;
     private final double x;
