@@ -26,6 +26,7 @@ public class GraphActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         setTitle(getIntent().getStringExtra(DATA_TYPE_NAME) + " Graph");
+//        List<ParcelableSample> rawData = getIntent().getParcelableArrayListExtra(RECORDED_DATA_FILE_NAME);
         List<ParcelableSample> rawData = loadDataFromFile();
         setupGraph(rawData);
     }

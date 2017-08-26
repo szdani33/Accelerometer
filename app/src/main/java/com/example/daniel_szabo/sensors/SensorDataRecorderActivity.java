@@ -33,6 +33,7 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity {
     private SensorDataRecorderService service;
     private TextView serviceStatusTV;
     private TextView recordingStatusTV;
+    private SimpleServiceConnection serviceConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +43,15 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity {
         bindService();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateComponents();
+    }
+
     private void bindService() {
-        bindService(new Intent(this, SensorDataRecorderService.class), new SimpleServiceConnection(), BIND_AUTO_CREATE);
+        serviceConnection = new SimpleServiceConnection();
+        bindService(new Intent(this, SensorDataRecorderService.class), serviceConnection, BIND_AUTO_CREATE);
     }
 
     private void initComponents() {
@@ -71,7 +79,7 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity {
     public void showGraph(View view) {
         Intent intent = new Intent(this, GraphActivity.class);
         intent.putExtra(GraphActivity.DATA_TYPE_NAME, getTitle());
-//        LargeDataTransferUtil.writeDataToTempFile(getApplicationContext(), GraphActivity.RECORDED_DATA_FILE_NAME, new ArrayList<>(createLargeData()));
+//        intent.putParcelableArrayListExtra(GraphActivity.RECORDED_DATA_FILE_NAME, new ArrayList<>(createLargeData()));
         try {
             LargeDataTransferUtil.writeDataToTempFile(getApplicationContext(), GraphActivity.RECORDED_DATA_FILE_NAME, new ArrayList<>(recordedData));
             startActivity(intent);
@@ -83,7 +91,7 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity {
 //    private List<ParcelableSample> createLargeData() {
 //        Random r = new Random();
 //        List<ParcelableSample> result = new ArrayList<>();
-//        for (int i = 0; i < 12000; i++) {
+//        for (int i = 0; i < 1000; i++) {
 //            result.add(new ParcelableSample(i * 60, r.nextDouble(), r.nextDouble(), r.nextDouble()));
 //        }
 //        return result;
@@ -133,6 +141,12 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity {
 
     private void toastMessage(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(serviceConnection);
     }
 
     private boolean hasRecordedData() {
