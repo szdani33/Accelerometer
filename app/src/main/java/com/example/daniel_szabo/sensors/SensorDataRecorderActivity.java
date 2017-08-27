@@ -9,11 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.daniel_szabo.sensors.parcelable.ParcelableSample;
 import com.example.daniel_szabo.sensors.util.FileUtil;
 import com.example.daniel_szabo.sensors.util.LargeDataTransferUtil;
+import com.example.daniel_szabo.sensors.util.ToastUtil;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -65,18 +65,18 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity {
         recordingStatusTV = (TextView) findViewById(R.id.recordingStatusTV);
     }
 
-    public void startRecording(View view) {
+    public void handleStartButton(View view) {
         service.startRecording();
         updateComponents();
     }
 
-    public void stopRecording(View view) {
+    public void handleStopButton(View view) {
         service.stopRecording();
         recordedData = service.getRecordedData();
         updateComponents();
     }
 
-    public void showGraph(View view) {
+    public void handleShowGraphButton(View view) {
         Intent intent;
 //        recordedData = createLargeData(1001);
         if (recordedData.size() <= 1000) {
@@ -98,7 +98,7 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity {
         try {
             LargeDataTransferUtil.writeDataToTempFile(getApplicationContext(), FileReadingGraphActivity.RECORDED_DATA_FILE_NAME_INTENT_KEY, new ArrayList<>(recordedData));
         } catch (IOException e) {
-            toastMessage("Cannot open Graph!");
+            ToastUtil.toastShortMessage(this, "Cannot open Graph!");
         }
         return intent;
     }
@@ -133,29 +133,29 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity {
         }
     }
 
-    public void saveData(View view) {
+    public void handleSaveButton(View view) {
         try {
             FileUtil.writeObjectToFile(openFileOutput(SAVED_DATA_FILE_NAME, MODE_PRIVATE), new ArrayList<>(recordedData));
-            toastMessage("Data saved successfully.");
+            ToastUtil.toastShortMessage(this, "Data saved successfully.");
         } catch (IOException e) {
-            toastMessage("Could NOT save data!");
+            ToastUtil.toastShortMessage(this, "Could NOT save data!");
         }
     }
 
-    public void loadData(View view) {
-        try {
-            recordedData = FileUtil.readObjectFromFile(openFileInput(SAVED_DATA_FILE_NAME));
-            toastMessage("Data loaded succesfully.");
-        } catch (FileNotFoundException e) {
-            toastMessage("No data found!");
-        } catch (IOException e) {
-            toastMessage("Could NOT load data!");
-        }
+    public void handleLoadButton(View view) {
+        loadData();
         updateComponents();
     }
 
-    private void toastMessage(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    private void loadData() {
+        try {
+            recordedData = FileUtil.readObjectFromFile(openFileInput(SAVED_DATA_FILE_NAME));
+            ToastUtil.toastShortMessage(this, "Data loaded succesfully.");
+        } catch (FileNotFoundException e) {
+            ToastUtil.toastShortMessage(this, "No data found!");
+        } catch (IOException e) {
+            ToastUtil.toastShortMessage(this, "Could NOT load data!");
+        }
     }
 
     @Override
