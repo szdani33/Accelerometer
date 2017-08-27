@@ -1,35 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.daniel_szabo.sensors.MenuActivity">
 
-    <Button android:id="@+id/accelerometerBt"
+    <Button
+        android:id="@+id/accelerometerBt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="80dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:padding="15dp"
         android:textSize="24sp"
+        android:padding="15dp"
         android:text="@string/accelerometer"
-        android:onClick="openAccelerometer" />
+        android:onClick="openAccelerometer"
 
-    <Button android:id="@+id/settingsBt"
+        android:layout_marginTop="80dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/settingsBt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:padding="15dp"
+        android:text="@string/settings"
+        android:onClick="openSettings"
 
         android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/accelerometerBt"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-
-        android:padding="15dp"
-        android:textSize="24sp"
-        android:text="@string/settings"
-        android:onClick="openSettings"/>
+        app:layout_constraintTop_toBottomOf="@+id/accelerometerBt"/>
 
 </android.support.constraint.ConstraintLayout>

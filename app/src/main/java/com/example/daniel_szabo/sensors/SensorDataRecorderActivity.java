@@ -77,21 +77,36 @@ public abstract class SensorDataRecorderActivity extends AppCompatActivity {
     }
 
     public void showGraph(View view) {
+        Intent intent;
+//        recordedData = createLargeData(1001);
+        if (recordedData.size() <= 1000) {
+            intent = createGraphActivityIntent();
+        } else {
+            intent = createGraphActivityIntentForLargeData();
+        }
+        startActivity(intent);
+    }
+
+    private Intent createGraphActivityIntent() {
         Intent intent = new Intent(this, GraphActivity.class);
-        intent.putExtra(GraphActivity.DATA_TYPE_NAME, getTitle());
-//        intent.putParcelableArrayListExtra(GraphActivity.RECORDED_DATA_FILE_NAME, new ArrayList<>(createLargeData()));
+        intent.putParcelableArrayListExtra(GraphActivity.RECORDED_DATA_INTENT_KEY, new ArrayList<>(recordedData));
+        return intent;
+    }
+
+    private Intent createGraphActivityIntentForLargeData() {
+        Intent intent = new Intent(this, FileReadingGraphActivity.class);
         try {
-            LargeDataTransferUtil.writeDataToTempFile(getApplicationContext(), GraphActivity.RECORDED_DATA_FILE_NAME, new ArrayList<>(recordedData));
-            startActivity(intent);
+            LargeDataTransferUtil.writeDataToTempFile(getApplicationContext(), FileReadingGraphActivity.RECORDED_DATA_FILE_NAME_INTENT_KEY, new ArrayList<>(recordedData));
         } catch (IOException e) {
             toastMessage("Cannot open Graph!");
         }
+        return intent;
     }
 
-//    private List<ParcelableSample> createLargeData() {
+//    private List<ParcelableSample> createLargeData(int amount) {
 //        Random r = new Random();
 //        List<ParcelableSample> result = new ArrayList<>();
-//        for (int i = 0; i < 1000; i++) {
+//        for (int i = 0; i < amount; i++) {
 //            result.add(new ParcelableSample(i * 60, r.nextDouble(), r.nextDouble(), r.nextDouble()));
 //        }
 //        return result;

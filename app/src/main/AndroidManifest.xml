@@ -27,6 +27,10 @@
             android:name=".GraphActivity"
             android:configChanges="screenSize|orientation"
             android:screenOrientation="userLandscape" />
+        <activity
+            android:name=".FileReadingGraphActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="userLandscape" />
 
         <service
             android:name=".SensorDataRecorderService"

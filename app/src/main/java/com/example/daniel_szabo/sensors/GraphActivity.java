@@ -5,39 +5,29 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.daniel_szabo.sensors.parcelable.ParcelableSample;
-import com.example.daniel_szabo.sensors.util.LargeDataTransferUtil;
-import com.example.daniel_szabo.sensors.util.ToastUtil;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.LinkedList;
 import java.util.List;
 
 public class GraphActivity extends AppCompatActivity {
-    public static final String RECORDED_DATA_FILE_NAME = "recordedDataFileName";
-    public static final String DATA_TYPE_NAME = "graphDataTypeName";
+    public static final String RECORDED_DATA_INTENT_KEY = "recordedDataIntentKey";
+    public static final String ACTIVITY_TITLE = "Accelerometer Graph";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
-        setTitle(getIntent().getStringExtra(DATA_TYPE_NAME) + " Graph");
-//        List<ParcelableSample> rawData = getIntent().getParcelableArrayListExtra(RECORDED_DATA_FILE_NAME);
-        List<ParcelableSample> rawData = loadDataFromFile();
-        setupGraph(rawData);
+        setTitle(ACTIVITY_TITLE);
+        setupGraph(loadRawData());
     }
 
-    private List<ParcelableSample> loadDataFromFile() {
-        try {
-            return LargeDataTransferUtil.readDataFromTempFile(getApplicationContext(), RECORDED_DATA_FILE_NAME);
-        } catch (IOException e) {
-            ToastUtil.toastShortMessage(getApplicationContext(), "Could NOT load data!");
-        }
-        return null;
+    protected List<ParcelableSample> loadRawData() {
+        return getIntent().getParcelableArrayListExtra(RECORDED_DATA_INTENT_KEY);
     }
 
     private void setupGraph(List<ParcelableSample> rawData) {
